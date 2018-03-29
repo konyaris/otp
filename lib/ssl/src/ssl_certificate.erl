@@ -138,8 +138,15 @@ validate(_, {bad_cert, _} = Reason, _) ->
     {fail, Reason};
 validate(_, valid, UserState) ->
     {valid, UserState};
-validate(Cert, valid_peer, UserState = {client, _,_, Hostname, _, _}) when Hostname =/= disable ->
-    verify_hostname(Hostname, Cert, UserState);  
+validate(Cert, valid_peer, UserState = {client, _,_, Servername, _, _}) when Servername =/= disable ->
+  Hostname =
+    case string:split(Servername, "@") of
+      [_, Name] ->
+        Name;
+      _ ->
+        Servername
+    end,
+  verify_hostname(Hostname, Cert, UserState);  
 validate(_, valid_peer, UserState) ->    
    {valid, UserState}.
 
