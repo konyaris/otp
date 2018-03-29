@@ -1086,16 +1086,12 @@ validate_option(next_protocols_advertised, undefined) ->
 validate_option(server_name_indication, Value) when is_list(Value) ->
     %% RFC 6066, Section 3: Currently, the only server names supported are
     %% DNS hostnames
-    %% case inet_parse:domain(Value) of
-    %%     false ->
-    %%         throw({error, {options, {{Opt, Value}}}});
-    %%     true ->
-    %%         Value
-    %% end;
-    %%
-    %% But the definition seems very diffuse, so let all strings through
-    %% and leave it up to public_key to decide...
-    Value;
+    case inet_parse:domain(Value) of
+         false ->
+             throw({error, {options, {{Opt, Value}}}});
+         true ->
+             Value
+    end;
 validate_option(server_name_indication, undefined) ->
     undefined;
 validate_option(server_name_indication, disable) ->

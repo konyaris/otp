@@ -361,7 +361,7 @@ do_setup(Driver, Kernel, Node, Type, MyNode, LongOrShortNames, SetupTime) ->
                     Opts =
                         trace(
                           connect_options(
-                            [{server_name_indication, atom_to_list(Node)}
+                            [{server_name_indication, Address}
                              |get_ssl_options(client)])),
 		    dist_util:reset_timer(Timer),
                     case ssl:connect(
